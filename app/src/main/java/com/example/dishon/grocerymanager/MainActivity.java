@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             data.getExtras();
             grocery_array_list.add(
                     new GroceryItem(data.getStringExtra("NAME"),
-                            data.getIntExtra("USER_ID",1)));
+                            data.getIntExtra("QUANTITY",1)));
 
             grocery_adapter.notifyDataSetChanged();
         }

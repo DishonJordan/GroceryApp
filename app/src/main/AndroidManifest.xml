@@ -20,7 +20,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Popup"></activity>
+        <activity android:name=".Popup"
+            android:theme="@style/AppTheme.CustomTheme">
+        </activity>
     </application>
 
 </manifest>
