@@ -1,6 +1,8 @@
 package com.example.dishon.grocerymanager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
@@ -77,26 +79,24 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                onButtonShowPopupWindowClick(v);
+                startActivityForResult(new Intent(MainActivity.this,Popup.class),1);
             }
 
         });
 
     }
 
-    public static void addNewItemToList(String name, int quantity){
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            data.getExtras();
+            grocery_array_list.add(
+                    new GroceryItem(data.getStringExtra("NAME"),
+                            data.getIntExtra("USER_ID",1)));
 
-
-        grocery_array_list.add(
-            new GroceryItem(name,quantity)
-        );
-
-        grocery_adapter.notifyDataSetChanged();
-
+            grocery_adapter.notifyDataSetChanged();
+        }
     }
-
-
-
 
     public void onButtonShowPopupWindowClick(View view) {
 

@@ -1,10 +1,12 @@
 package com.example.dishon.grocerymanager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class Popup extends Activity {
 
@@ -20,9 +22,29 @@ public class Popup extends Activity {
         add_new_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText name = findViewById(R.id.food_input);
-                EditText quantity = findViewById(R.id.food_quantity_input);
-                MainActivity.addNewItemToList(name.toString(),Integer.parseInt(quantity.toString()));
+                EditText name_text = findViewById(R.id.food_input);
+                EditText quantity_text = findViewById(R.id.food_quantity_input);
+
+                if(name_text.getText().toString().isEmpty() || quantity_text.getText().toString().isEmpty()) {
+
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Please enter a valid name and quantity",
+                            Toast.LENGTH_SHORT);
+
+                    toast.show();
+                }else{
+                    String name = name_text.getText().toString();
+                    int quantity = Integer.parseInt(quantity_text.getText().toString());
+
+                    Bundle resulting_item = new Bundle();
+                    resulting_item.putString("NAME", name);
+                    resulting_item.putInt("QUANTITY", quantity);
+
+                    Intent intent = new Intent(Popup.this, MainActivity.class);
+                    intent.putExtras(resulting_item);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
 
         });
