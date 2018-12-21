@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.CheckBox;
 
@@ -37,13 +38,27 @@ public class CustomListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater infl = LayoutInflater.from(myContext);
-        View custom_view = infl.inflate(R.layout.list_item,parent,false);
+        final View custom_view = infl.inflate(R.layout.list_item,parent,false);
 
         TextView name = (TextView)custom_view.findViewById(R.id.item_name);
         TextView quantity = (TextView)custom_view.findViewById(R.id.item_quantity);
+
         CheckBox box = (CheckBox)custom_view.findViewById(R.id.item_selected);
+        box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    groceryItems.get(position).setSelected(true);
+                    custom_view.findViewById(R.id.list_item_holder).setBackgroundResource(R.drawable.shadow_selected);
+                }else{
+                    groceryItems.get(position).setSelected(false);
+                    custom_view.findViewById(R.id.list_item_holder).setBackgroundResource(R.drawable.shadow);
+
+                }
+            }
+        });
 
         name.setText(groceryItems.get(position).getName());
         quantity.setText(String.valueOf(groceryItems.get(position).getQuantity()));

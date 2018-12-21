@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,52 +42,47 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+
         grocery_array_list = new ArrayList<>();
 
         fab = findViewById(R.id.fab);
 
-        ListView grocery_list = findViewById(R.id.grocery_list);
+        final ListView grocery_list = findViewById(R.id.grocery_list);
 
-        grocery_array_list.add(new GroceryItem("Potato",5));
-        grocery_array_list.add(new GroceryItem("Lettuce",9));
-        grocery_array_list.add(new GroceryItem("Tomato",100));
-        grocery_array_list.add(new GroceryItem("Squash",4));
-        grocery_array_list.add(new GroceryItem("Eggs",12));
-        grocery_array_list.add(new GroceryItem("Potato",5));
-        grocery_array_list.add(new GroceryItem("Lettuce",9));
-        grocery_array_list.add(new GroceryItem("Tomato",100));
-        grocery_array_list.add(new GroceryItem("Squash",4));
-        grocery_array_list.add(new GroceryItem("Eggs",12));
-        grocery_array_list.add(new GroceryItem("Potato",5));
-        grocery_array_list.add(new GroceryItem("Lettuce",9));
-        grocery_array_list.add(new GroceryItem("Tomato",100));
-        grocery_array_list.add(new GroceryItem("Squash",4));
-        grocery_array_list.add(new GroceryItem("Eggs",12));
-        grocery_array_list.add(new GroceryItem("Potato",5));
-        grocery_array_list.add(new GroceryItem("Lettuce",9));
-        grocery_array_list.add(new GroceryItem("Tomato",100));
-        grocery_array_list.add(new GroceryItem("Squash",4));
-        grocery_array_list.add(new GroceryItem("Eggs",12));
-        grocery_array_list.add(new GroceryItem("Potato",5));
-        grocery_array_list.add(new GroceryItem("Lettuce",9));
-        grocery_array_list.add(new GroceryItem("Tomato",100));
-        grocery_array_list.add(new GroceryItem("Squash",4));
-        grocery_array_list.add(new GroceryItem("Eggs",12));
+        grocery_array_list.add(new GroceryItem("Potato", 5));
+        grocery_array_list.add(new GroceryItem("Lettuce", 9));
+        grocery_array_list.add(new GroceryItem("Tomato", 100));
+        grocery_array_list.add(new GroceryItem("Squash", 4));
+        grocery_array_list.add(new GroceryItem("Eggs", 12));
 
-        grocery_adapter = new CustomListAdapter(this,grocery_array_list);
-        grocery_list.setAdapter(new CustomListAdapter(this,grocery_array_list));
+        grocery_adapter = new CustomListAdapter(this, grocery_array_list);
+        grocery_list.setAdapter(new CustomListAdapter(this, grocery_array_list));
 
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(MainActivity.this,Popup.class),1);
+                startActivityForResult(new Intent(MainActivity.this, Popup.class), 1);
             }
 
         });
 
-    }
+        grocery_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Please enter a valid name and quantity",
+                        Toast.LENGTH_SHORT);
 
+                toast.show();
+            }
+        });
+
+
+
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 1 && resultCode == RESULT_OK){
@@ -98,41 +95,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onButtonShowPopupWindowClick(View view) {
-
-        // inflate the layout of the popup window
-        LayoutInflater inflater = (LayoutInflater)
-                getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.add_item, null);
-
-        // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; // lets taps outside the popup also dismiss it
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-        // show the popup window
-        // which view you pass in doesn't matter, it is only used for the window tolken
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-        // dismiss the popup window when touched
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                popupWindow.dismiss();
-                fab.show();
-                return true;
-            }
-
-        });
-
-    }
-
 
     /**
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+
 }

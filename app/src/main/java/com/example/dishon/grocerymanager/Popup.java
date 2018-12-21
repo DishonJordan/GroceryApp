@@ -22,7 +22,7 @@ public class Popup extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width* 0.9) ,(int)(height * 0.6));
+        getWindow().setLayout((int)(width* 0.9) ,(int)(height * 0.4));
 
 
         Button add_new_item = findViewById(R.id.food_submit);

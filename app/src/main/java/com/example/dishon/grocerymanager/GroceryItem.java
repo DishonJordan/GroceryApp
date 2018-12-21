@@ -8,10 +8,12 @@ public class GroceryItem {
     private Date expiration_date;
     private int quantity;
     private double price;
+    private boolean selected;
 
     public  GroceryItem(String n, int q){
         name = n;
         quantity = q;
+        selected = false;
 
     }
 
@@ -77,6 +79,14 @@ public class GroceryItem {
         } else
             return false;
 
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
 }
